@@ -18,6 +18,7 @@
 
 CWinQAODlg::CWinQAODlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_WINQAO_DIALOG, pParent)
+	, cstrDirSrc(_T(""))
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -25,11 +26,14 @@ CWinQAODlg::CWinQAODlg(CWnd* pParent /*=nullptr*/)
 void CWinQAODlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_DIR_SRC, cstrDirSrc);
 }
 
 BEGIN_MESSAGE_MAP(CWinQAODlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CWinQAODlg::OnBnClickedButton1)
+	ON_EN_CHANGE(IDC_EDIT2, &CWinQAODlg::OnEnChangeEdit2)
 END_MESSAGE_MAP()
 
 
@@ -85,3 +89,25 @@ HCURSOR CWinQAODlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CWinQAODlg::OnBnClickedButton1()
+{
+	CFolderPickerDialog FolderPicker;
+	FolderPicker.DoModal();
+	UpdateData(true);
+	cstrDirSrc.SetString(FolderPicker.GetFolderPath());
+	UpdateData(false);
+	// TODO: Add your control notification handler code here
+}
+
+
+void CWinQAODlg::OnEnChangeEdit2()
+{
+	// TODO:  If this is a RICHEDIT control, the control will not
+	// send this notification unless you override the CDialogEx::OnInitDialog()
+	// function and call CRichEditCtrl().SetEventMask()
+	// with the ENM_CHANGE flag ORed into the mask.
+
+	// TODO:  Add your control notification handler code here
+}
